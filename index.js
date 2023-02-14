@@ -16,8 +16,20 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
+async function run() {
+  try {
+    const servicesDatabase = client.db("client_services").collection("service");
 
-
+    app.get("/service", async (req, res) => {
+      const query = {};
+      const cursor = servicesDatabase.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+  } finally {
+  }
+}
+run().catch((err) => console.log(err));
 // server default port
 app.get("/", (req, res) => {
   res.send("Ar khan photography server !");
